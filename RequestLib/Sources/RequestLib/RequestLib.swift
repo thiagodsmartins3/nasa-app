@@ -3,8 +3,8 @@
 
 import Foundation
 
-class Request {
-    enum RequestType {
+public class Request {
+    public enum RequestType {
         case get
         case post
         case put
@@ -26,7 +26,7 @@ class Request {
     
     private init() { }
     
-    static func request<T: Decodable>(
+    public static func request<T: Decodable>(
         url: String,
         method: RequestType = .get,
         headers: [String: String] = [:],
