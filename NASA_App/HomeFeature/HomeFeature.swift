@@ -16,7 +16,8 @@ struct HomeFeature {
     }
     
     enum Action {
-        case requestData
+        case onAppear
+        case dataLoaded(Result<ApodModel, Error>)
     }
     
     var body: some ReducerOf<Self> {
@@ -24,7 +25,9 @@ struct HomeFeature {
             state, action in
             
             switch action {
-            case .requestData:
+            case .onAppear:
+                return .none
+            case .dataLoaded(let result):
                 return .none
             }
         }
