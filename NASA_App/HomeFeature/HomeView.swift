@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 struct HomeView: View {
     let store: StoreOf<HomeFeature>
+    @State private var position = ScrollPosition(edge: .top)
     
     var body: some View {
         VStack {
@@ -17,6 +18,19 @@ struct HomeView: View {
                 data in
                 Section {
                     ListRowView(item: data)
+                        .id(data.id)
+                }
+                
+                if store.state.isLoading {
+                    ProgressView()
+                        .padding()
+                }
+                
+                if data == store.state.apodData.last {
+                    Color.clear
+                        .onAppear {
+                            store.send(.loadMoreData)
+                        }
                 }
             }
             .listRowSpacing(10)
@@ -24,6 +38,13 @@ struct HomeView: View {
         .onAppear() {
             store.send(.onAppear)
         }
+    }
+}
+
+struct ScrollOffsetPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value += nextValue()
     }
 }
 
