@@ -16,12 +16,13 @@ struct ListRowView: View {
             Text(item.title ?? "")
             Text(item.date ?? "")
             Text(item.explanation ?? "")
-            AsyncImage(url: URL(string: item.url ?? "")) {
-                image in
-                image.image?.resizable()
+            AsyncImage(url: URL(string: item.url ?? "")) { image in
+                image.resizable()
                     .aspectRatio(contentMode: .fit)
                     .clipShape(RoundedRectangle(cornerRadius: 25))
                     .padding()
+            } placeholder: {
+                ProgressView()
             }
         }
     }
