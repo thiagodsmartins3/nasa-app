@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - ApodModelElement
-struct ApodModelElement: Codable, Identifiable {
+struct ApodModelElement: Codable, Identifiable, Equatable {
     var id = UUID()
     let copyright: String?
     let date: String?
