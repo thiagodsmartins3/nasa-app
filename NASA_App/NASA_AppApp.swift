@@ -7,9 +7,14 @@
 
 import SwiftUI
 import SwiftData
+import ComposableArchitecture
 
 @main
 struct NASA_AppApp: App {
+    static let store = Store(initialState: HomeFeature.State()) {
+        HomeFeature()
+    }
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -25,7 +30,7 @@ struct NASA_AppApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView(store: NASA_AppApp.store)
         }
         .modelContainer(sharedModelContainer)
     }

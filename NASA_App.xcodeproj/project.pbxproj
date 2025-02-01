@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20819FA52D4C5738009D5517 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 20819FA42D4C5738009D5517 /* ComposableArchitecture */; };
+		20F483422D4D9DB20079019C /* RequestLib in Frameworks */ = {isa = PBXBuildFile; productRef = 20F483412D4D9DB20079019C /* RequestLib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20F483422D4D9DB20079019C /* RequestLib in Frameworks */,
 				20819FA52D4C5738009D5517 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +120,7 @@
 			name = NASA_App;
 			packageProductDependencies = (
 				20819FA42D4C5738009D5517 /* ComposableArchitecture */,
+				20F483412D4D9DB20079019C /* RequestLib */,
 			);
 			productName = NASA_App;
 			productReference = 20819F582D4C4599009D5517 /* NASA_App.app */;
@@ -203,6 +206,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				20819FA32D4C5738009D5517 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				20F483402D4D9DB20079019C /* XCLocalSwiftPackageReference "RequestLib" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 20819F592D4C4599009D5517 /* Products */;
@@ -568,6 +572,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		20F483402D4D9DB20079019C /* XCLocalSwiftPackageReference "RequestLib" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = RequestLib;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		20819FA32D4C5738009D5517 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -584,6 +595,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 20819FA32D4C5738009D5517 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		20F483412D4D9DB20079019C /* RequestLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RequestLib;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

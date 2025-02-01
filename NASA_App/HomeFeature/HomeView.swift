@@ -15,8 +15,11 @@ struct HomeView: View {
         VStack {
             List(store.state.apodData) {
                 data in
-                
+                ListRowView(item: data)
             }
+        }
+        .onAppear() {
+            store.send(.onAppear)
         }
     }
 }

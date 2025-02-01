@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import RequestLib
 
 @Reducer
 struct HomeFeature {
@@ -17,7 +18,7 @@ struct HomeFeature {
     
     enum Action {
         case onAppear
-        case dataLoaded(Result<ApodModel, Error>)
+        case dataLoaded(ApodModel)
     }
     
     var body: some ReducerOf<Self> {
@@ -26,8 +27,25 @@ struct HomeFeature {
             
             switch action {
             case .onAppear:
-                return .none
+                state.isLoading = true
+                return .run { send in
+                    Task {
+                        do {
+                            let data = try await Request.request(
+                                url: "https://api.nasa.gov/planetary/apod",
+                                parameters: ["api_key": "tXmVmbfNXhgA5E4vlxFWf6iOvhakt8vc4eOvbJeE",
+                                             "count": 3],
+                                responseModel: ApodModel.self
+                            )!
+                            await send(.dataLoaded(data))
+                        } catch let error {
+                            print(error.localizedDescription)
+                        }
+                    }
+                }
             case .dataLoaded(let result):
+                state.isLoading = false
+                state.apodData = result
                 return .none
             }
         }
