@@ -76,4 +76,41 @@ public class Request {
 
         task.resume()
     }
+    
+    public static func request<T: Decodable>(
+        url: String,
+        method: RequestType = .get,
+        headers: [String: String] = [:],
+        parameters: [String: Any] = [:],
+        responseModel: T.Type
+    ) async throws -> T? {
+        var request: URLRequest?
+        var components: URLComponents?
+        
+        guard let url = URL(string: url) else {
+            return nil
+        }
+        
+        components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        
+        if !parameters.isEmpty {
+            components?.queryItems = parameters.map { URLQueryItem(name: $0.key, value: String(describing: $0.value)) }
+        }
+        
+        request = URLRequest(url: components!.url!)
+        request?.httpMethod = method.type
+        request?.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        if !headers.isEmpty {
+            for (key, value) in headers {
+                request?.addValue(key, forHTTPHeaderField: value)
+            }
+        }
+    
+        let (data, _) = try await URLSession.shared.data(from: components!.url!)
+        
+        let dataDecoded = try JSONDecoder().decode(T.self, from: data)
+        
+        return dataDecoded
+    }
 }
