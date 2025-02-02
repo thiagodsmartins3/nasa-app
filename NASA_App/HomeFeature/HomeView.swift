@@ -12,7 +12,7 @@ struct HomeView: View {
     let store: StoreOf<HomeFeature>
     @Environment(\.modelContext) var modelContext
     @State private var isLiked: Bool = false
-    @State private var showButton: Bool = false
+    @State private var showButton: Bool = true
     @State private var presentSearchView: Bool = false
     
     var body: some View {
@@ -71,7 +71,7 @@ struct HomeView: View {
             .transition(.asymmetric(insertion: .scale, removal: .opacity))
             .opacity(showButton ? 1 : 0)
             .fullScreenCover(isPresented: $presentSearchView) {
-                SearchView(isPresented: $presentSearchView)
+                SearchView(isPresented: $presentSearchView, store: NASA_AppApp.storeSearch)
             }
         }
     }

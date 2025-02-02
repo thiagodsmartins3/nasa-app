@@ -6,18 +6,23 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct SearchView: View {
     @State private var inputText: String = ""
     @Binding var isPresented: Bool
+    let store: StoreOf<SearchFeature>
     
     var body: some View {
         VStack {
             HStack(alignment: .top) {
-              Image(systemName: "person.circle")
+              Image(systemName: "magnifyingglass")
                 .resizable()
                 .frame(width: 24, height: 24)
-                TextField("", text: $inputText)
+                TextField("Search for a date", text: $inputText)
+                    .onSubmit {
+                        store.send(.requestData(inputText))
+                    }
             }
             .padding()
             .overlay(
@@ -25,6 +30,11 @@ struct SearchView: View {
                 .stroke(Color.gray, lineWidth: 1)
             )
             .padding()
+            
+            if let result = store.state.apodData {
+                Text(result.title ?? "")
+            }
+            
             Spacer()
         }
         .gesture(

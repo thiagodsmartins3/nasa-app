@@ -13,13 +13,12 @@ struct SearchFeature {
     @ObservableState
     struct State {
         var isLoading = false
-        var apodData: ApodModel = []
+        var apodData: ApodModelElement? = nil
     }
     
     enum Action {
-        case onAppear
-        case dataLoaded(ApodModel)
-        case loadMoreData
+        case requestData(String)
+        case dataLoaded(ApodModelElement)
     }
     
     var body: some ReducerOf<Self> {
@@ -27,7 +26,7 @@ struct SearchFeature {
             state, action in
             
             switch action {
-            case .onAppear:
+            case .requestData(let data):
                 state.isLoading = true
                 return .run { send in
                     Task {
@@ -35,8 +34,8 @@ struct SearchFeature {
                             let data = try await Request.request(
                                 url: "https://api.nasa.gov/planetary/apod",
                                 parameters: ["api_key": "tXmVmbfNXhgA5E4vlxFWf6iOvhakt8vc4eOvbJeE",
-                                             "count": 3],
-                                responseModel: ApodModel.self
+                                             "date": data],
+                                responseModel: ApodModelElement.self
                             )!
                             await send(.dataLoaded(data))
                         } catch let error {
@@ -46,33 +45,9 @@ struct SearchFeature {
                 }
             case .dataLoaded(let result):
                 state.isLoading = false
-                
-                if state.apodData.isEmpty {
-                    state.apodData = result
-                } else {
-                    state.apodData.append(contentsOf: result)
-                }
-                
+                state.apodData = result
                 return .none
-            case .loadMoreData:
-                state.isLoading = true
-                return .run { send in
-                    Task {
-                        do {
-                            let data = try await Request.request(
-                                url: "https://api.nasa.gov/planetary/apod",
-                                parameters: ["api_key": "tXmVmbfNXhgA5E4vlxFWf6iOvhakt8vc4eOvbJeE",
-                                             "count": 3],
-                                responseModel: ApodModel.self
-                            )!
-                            await send(.dataLoaded(data))
-                        } catch let error {
-                            print(error.localizedDescription)
-                        }
-                    }
-                }
             }
-            
         }
     }
 }

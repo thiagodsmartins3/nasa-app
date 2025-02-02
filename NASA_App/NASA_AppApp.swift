@@ -15,6 +15,10 @@ struct NASA_AppApp: App {
         HomeFeature()
     }
     
+    static let storeSearch = Store(initialState: SearchFeature.State()) {
+        SearchFeature()
+    }
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Favorites.self,
