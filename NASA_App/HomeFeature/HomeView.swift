@@ -13,6 +13,7 @@ struct HomeView: View {
     @Environment(\.modelContext) var modelContext
     @State private var isLiked: Bool = false
     @State private var showButton: Bool = false
+    @State private var presentSearchView: Bool = false
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -56,7 +57,7 @@ struct HomeView: View {
             }
             
             Button {
-                
+                presentSearchView.toggle()
             } label: {
                 Image(systemName: "magnifyingglass")
                     .font(.title2.weight(.bold))
@@ -69,37 +70,9 @@ struct HomeView: View {
             .padding()
             .transition(.asymmetric(insertion: .scale, removal: .opacity))
             .opacity(showButton ? 1 : 0)
-            
-//            if showButton {
-//                Button {
-//                    
-//                } label: {
-//                    Image(systemName: "magnifyingglass")
-//                        .font(.title2.weight(.bold))
-//                        .foregroundColor(.white)
-//                        .padding()
-//                        .background(.orange)
-//                        .clipShape(Circle())
-//                        .shadow(radius: 5, x: 0, y: 3)
-//                }
-//                .padding()
-//                .transition(.asymmetric(insertion: .scale, removal: .opacity))
-//            } else {
-//                Button {
-//                    
-//                } label: {
-//                    Image(systemName: "magnifyingglass")
-//                        .font(.title2.weight(.bold))
-//                        .foregroundColor(.white)
-//                        .padding()
-//                        .background(.orange)
-//                        .clipShape(Circle())
-//                        .shadow(radius: 5, x: 0, y: 3)
-//                }
-//                .padding()
-//                .transition(.asymmetric(insertion: .scale, removal: .opacity))
-//                .show
-//            }
+            .fullScreenCover(isPresented: $presentSearchView) {
+                SearchView(isPresented: $presentSearchView)
+            }
         }
     }
     
