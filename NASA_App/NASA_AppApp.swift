@@ -17,7 +17,7 @@ struct NASA_AppApp: App {
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Favorites.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
