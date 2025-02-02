@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 struct SearchView: View {
     @State private var inputText: String = ""
+    @State private var isLiked = false
     @Binding var isPresented: Bool
     let store: StoreOf<SearchFeature>
     
@@ -32,7 +33,7 @@ struct SearchView: View {
             .padding()
             
             if let result = store.state.apodData {
-                Text(result.title ?? "")
+                SearchResponseView(item: result, liked: $isLiked)
             }
             
             Spacer()
