@@ -18,7 +18,7 @@ struct HomeView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             VStack {
-                Text("NASA")
+                Text("NASA APP")
                     .frame(width: UIScreen.main.bounds.size.width)
                     .background(Color.blue)
                     .padding(.bottom)

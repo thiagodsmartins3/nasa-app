@@ -32,10 +32,23 @@ struct SearchView: View {
             )
             .padding()
             
-            if let result = store.state.apodData {
-                SearchResponseView(item: result, liked: $isLiked)
+            
+            if store.state.isLoading {
+                ProgressView()
+                    .padding()
             }
             
+            if let result = store.state.apodData {
+                SearchResponseView(item: result, liked: $isLiked)
+            } else {
+                Image("nasa")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: UIScreen.main.bounds.width / 2,
+                           height: UIScreen.main.bounds.height / 2,
+                           alignment: .center)
+                    .padding([.leading, .trailing], 10)
+            }
             Spacer()
         }
         .gesture(
