@@ -12,38 +12,75 @@ struct HomeView: View {
     let store: StoreOf<HomeFeature>
     @Environment(\.modelContext) var modelContext
     @State private var isLiked: Bool = false
+    @State private var showButton: Bool = true
+    @State private var presentSearchView: Bool = false
     
     var body: some View {
-        VStack {
-            List(store.state.apodData) {
-                data in
-                Section {
-                    ListRowView(item: data, likedRow: $isLiked)
-                        .id(data.id)
-                        .listRowBackground(
-                            isLiked ?
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(.red, lineWidth: 2) : nil
-                        )
-                }
+        ZStack(alignment: .bottomTrailing) {
+            VStack {
+                Text("NASA APP")
+                    .frame(width: UIScreen.main.bounds.size.width)
+                    .background(Color.blue)
+                    .padding(.bottom)
+                    .font(.system(.body, design: .rounded))
+                    .fontWeight(.heavy)
+                    .foregroundStyle(.white)
+                
+                List(store.state.apodData) {
+                    data in
+                    Section {
+                        ListRowView(item: data, likedRow: $isLiked)
+                            .id(data.id)
+                            .listRowBackground(
+                                isLiked ?
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.red, lineWidth: 2) : nil
+                            )
+                    }
 
-                
-                if store.state.isLoading {
-                    ProgressView()
-                        .padding()
+                    
+                    if store.state.isLoading {
+                        ProgressView()
+                            .padding()
+                    }
+                    
+                    if data == store.state.apodData.last {
+                        Color.clear
+                            .onAppear {
+                                store.send(.loadMoreData)
+                            }
+                    }
                 }
-                
-                if data == store.state.apodData.last {
-                    Color.clear
-                        .onAppear {
-                            store.send(.loadMoreData)
+                .listRowSpacing(10)
+                .simultaneousGesture(
+                    LongPressGesture(minimumDuration: 0.5).onEnded({ _ in
+                        withAnimation {
+                            showButton.toggle()
                         }
-                }
+                    })
+                )
             }
-            .listRowSpacing(10)
-        }
-        .onAppear() {
-            store.send(.onAppear)
+            .onAppear() {
+                store.send(.onAppear)
+            }
+            
+            Button {
+                presentSearchView.toggle()
+            } label: {
+                Image(systemName: "magnifyingglass")
+                    .font(.title2.weight(.bold))
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(.orange)
+                    .clipShape(Circle())
+                    .shadow(radius: 5, x: 0, y: 3)
+            }
+            .padding()
+            .transition(.asymmetric(insertion: .scale, removal: .opacity))
+            .opacity(showButton ? 1 : 0)
+            .fullScreenCover(isPresented: $presentSearchView) {
+                SearchView(isPresented: $presentSearchView, store: NASA_AppApp.storeSearch)
+            }
         }
     }
     
