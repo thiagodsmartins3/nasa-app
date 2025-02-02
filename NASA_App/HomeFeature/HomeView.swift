@@ -18,6 +18,14 @@ struct HomeView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             VStack {
+                Text("NASA")
+                    .frame(width: UIScreen.main.bounds.size.width)
+                    .background(Color.blue)
+                    .padding(.bottom)
+                    .font(.system(.body, design: .rounded))
+                    .fontWeight(.heavy)
+                    .foregroundStyle(.white)
+                
                 List(store.state.apodData) {
                     data in
                     Section {
