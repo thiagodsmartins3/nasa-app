@@ -18,7 +18,8 @@ struct ApodModelElement: Codable, Identifiable, Equatable {
     let serviceVersion: String?
     let title: String?
     let url: String?
-
+    var isLiked: Bool? = false
+    
     enum CodingKeys: String, CodingKey {
         case copyright
         case date
@@ -28,6 +29,10 @@ struct ApodModelElement: Codable, Identifiable, Equatable {
         case serviceVersion
         case title
         case url
+    }
+    
+    mutating func test(liked: Bool) {
+        isLiked = liked
     }
 }
 

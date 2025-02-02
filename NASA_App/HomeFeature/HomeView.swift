@@ -10,16 +10,23 @@ import ComposableArchitecture
 
 struct HomeView: View {
     let store: StoreOf<HomeFeature>
-    @State private var position = ScrollPosition(edge: .top)
+    @Environment(\.modelContext) var modelContext
+    @State private var isLiked: Bool = false
     
     var body: some View {
         VStack {
             List(store.state.apodData) {
                 data in
                 Section {
-                    ListRowView(item: data)
+                    ListRowView(item: data, likedRow: $isLiked)
                         .id(data.id)
+                        .listRowBackground(
+                            isLiked ?
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.red, lineWidth: 2) : nil
+                        )
                 }
+
                 
                 if store.state.isLoading {
                     ProgressView()
@@ -38,6 +45,11 @@ struct HomeView: View {
         .onAppear() {
             store.send(.onAppear)
         }
+    }
+    
+    func saveToFavorites() {
+        let save = Favorites(date: "2024-10-10")
+        modelContext.insert(save)
     }
 }
 
