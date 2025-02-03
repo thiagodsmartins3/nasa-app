@@ -6,21 +6,32 @@
 //
 
 import ComposableArchitecture
-
-import ComposableArchitecture
 import RequestLib
+import SwiftData
 
 @Reducer
 struct FavoriteFeature {
     @ObservableState
     struct State {
         var isLoading = false
-        var apodData: ApodModelElement? = nil
+        var fetchDescriptor = FetchDescriptor<Favorites>()
+        var favoritesList: [Favorites] = []
     }
     
     enum Action {
-        case requestData(String)
-        case dataLoaded(ApodModelElement)
+        case loadFavorites(ModelContext)
+        case dataLoaded([Favorites])
+    }
+    
+    func fetchData(_ modelContext: ModelContext, descriptor: FetchDescriptor<Favorites>) async -> [Favorites] {
+        do {
+            let favorites = try modelContext.fetch(descriptor)
+            return favorites
+        } catch {
+            print("Failed to load Movie model.")
+        }
+        
+        return []
     }
     
     var body: some ReducerOf<Self> {
@@ -28,26 +39,19 @@ struct FavoriteFeature {
             state, action in
             
             switch action {
-            case .requestData(let data):
+            case .loadFavorites(let modelContext):
                 state.isLoading = true
-                return .run { send in
-                    Task {
-                        do {
-                            let data = try await Request.request(
-                                url: "https://api.nasa.gov/planetary/apod",
-                                parameters: ["api_key": "tXmVmbfNXhgA5E4vlxFWf6iOvhakt8vc4eOvbJeE",
-                                             "date": data],
-                                responseModel: ApodModelElement.self
-                            )!
-                            await send(.dataLoaded(data))
-                        } catch let error {
-                            print(error.localizedDescription)
-                        }
-                    }
+                do {
+                    let favorites = try modelContext.fetch(state.fetchDescriptor)
+                    return .send(.dataLoaded(favorites))
+                } catch {
+                    print("Failed to load Movie model.")
                 }
+                
+                return .none
             case .dataLoaded(let result):
                 state.isLoading = false
-                state.apodData = result
+                state.favoritesList = result
                 return .none
             }
         }

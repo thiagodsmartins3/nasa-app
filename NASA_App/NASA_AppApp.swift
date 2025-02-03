@@ -19,10 +19,14 @@ struct NASA_AppApp: App {
         SearchFeature()
     }
     
+    static let storeFavorites = Store(initialState: FavoriteFeature.State()) {
+        FavoriteFeature()
+    }
+    
     var body: some Scene {
         WindowGroup {
             HomeView(store: NASA_AppApp.store)
         }
-        .modelContainer(for: Favorites.self)
+        .modelContainer(for: [Favorites.self, ApodPersistentModel.self])
     }
 }

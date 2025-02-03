@@ -11,10 +11,10 @@ import Foundation
 @Model
 class Favorites {
     @Attribute(.unique) var id: UUID
-    var favorite: [ApodModelElement] = []
+    var data: ApodPersistentModel
     
-    init(data: ApodModelElement) {
+    init(data: ApodPersistentModel) {
         self.id = UUID()
-        favorite.insert(data, at: 0)
+        self.data = data
     }
 }
