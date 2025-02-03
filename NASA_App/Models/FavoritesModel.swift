@@ -11,10 +11,10 @@ import Foundation
 @Model
 class Favorites {
     @Attribute(.unique) var id: UUID
-    var date: String
+    var data: ApodPersistentModel
     
-    init(date: String) {
+    init(data: ApodPersistentModel) {
         self.id = UUID()
-        self.date = date
+        self.data = data
     }
 }

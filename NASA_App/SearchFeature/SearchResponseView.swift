@@ -16,7 +16,10 @@ struct SearchResponseView: View {
         ScrollView {
             ZStack {
                 VStack(spacing: 20) {
-                    LikeButtonView(isLiked: $isLiked)
+                    LikeButtonView(isLiked: $isLiked, action: {
+                        result in
+                        
+                    })
                         .foregroundColor(.red)
                     Text(item.title ?? "")
                     Text(item.date ?? "")
