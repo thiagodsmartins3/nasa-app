@@ -88,24 +88,6 @@ struct HomeView: View {
                 
                 Button {
                     presentFavoritesView.toggle()
-//                    let fetchDescriptor = FetchDescriptor<Favorites>()
-//
-//                    do {
-//                        let favorites = try modelContext.fetch(fetchDescriptor)
-//                        
-//                        for dt in favorites {
-//                        
-//                        }
-//                        
-//                        if favorites.isEmpty {
-//                            isFavoriteEmpty = true
-//                        } else {
-//                            isFavoriteEmpty = false
-//                        }
-//                        
-//                    } catch {
-//                        print("Failed to load Movie model.")
-//                    }
                 } label: {
                     Image(systemName: "heart.circle")
                         .font(.title2.weight(.bold))

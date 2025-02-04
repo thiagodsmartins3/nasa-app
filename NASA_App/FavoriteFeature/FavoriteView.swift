@@ -27,13 +27,23 @@ struct FavoriteView: View {
                     .fontWeight(.heavy)
                     .foregroundStyle(.white)
                 
-                List(store.state.favoritesList) {
-                    data in
-                    Section {
-                        FavoritesListView(item: data, likedRow: $isLiked)
+                if store.state.favoritesList.isEmpty {
+                    Image("nasa")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: UIScreen.main.bounds.width / 2,
+                               height: UIScreen.main.bounds.height / 2,
+                               alignment: .center)
+                        .padding([.leading, .trailing], 10)
+                } else {
+                    List(store.state.favoritesList) {
+                        data in
+                        Section {
+                            FavoritesListView(item: data, likedRow: $isLiked)
+                        }
                     }
+                    .listRowSpacing(10)
                 }
-                .listRowSpacing(10)
             }
             .onAppear() {
                 store.send(.loadFavorites(modelContext))
