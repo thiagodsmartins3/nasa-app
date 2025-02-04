@@ -89,11 +89,11 @@ struct HomeView: View {
                 Button {
                     presentFavoritesView.toggle()
                 } label: {
-                    Image(systemName: "heart.circle")
+                    Image(systemName: "heart")
                         .font(.title2.weight(.bold))
                         .foregroundColor(.white)
                         .padding()
-                        .background(isLiked ? .gray : .red)
+                        .background(.red)
                         .clipShape(Circle())
                         .shadow(radius: 5, x: 0, y: 3)
                 }

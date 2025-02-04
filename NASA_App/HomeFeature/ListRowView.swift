@@ -7,7 +7,7 @@
 
 import SwiftUI
 import RequestLib
-
+import Foundation
 struct ListRowView: View {
     var item: ApodModelElement
     @State private var isLiked: Bool = false
@@ -24,7 +24,9 @@ struct ListRowView: View {
                         modelContext.insert(Favorites(data: ApodPersistentModel(copyright: item.copyright ?? "", date: item.date, explanation: item.explanation, hdurl: item.hdurl ?? "", mediaType: item.mediaType ?? "", serviceVersion: item.serviceVersion ?? "", title: item.title ?? "", url: item.url ?? "")))
                         print("Inserted")
                     } else {
-                        modelContext.insert(Favorites(data: ApodPersistentModel(copyright: item.copyright ?? "", date: item.date, explanation: item.explanation, hdurl: item.hdurl ?? "", mediaType: item.mediaType ?? "", serviceVersion: item.serviceVersion ?? "", title: item.title ?? "", url: item.url ?? "")))
+                        try! modelContext.delete(model: Favorites.self, where: #Predicate {
+                            $0.data.title ?? "" == item.title ?? ""
+                        })
                         print("Removed")
                     }
                 })
